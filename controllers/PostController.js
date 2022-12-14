@@ -1,5 +1,56 @@
 import PostModel from '../models/Post.js';
 
+export const getAll = async (req, res) => {
+    try {
+        const posts = await PostModel.find().populate('user').exec();
+        res.json(posts);
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({
+            message: "faild to get posts",
+        });
+    }
+};
+
+export const getOne = async (req, res) => {
+    try {
+        const postId = req.params.id;
+
+        PostModel.findOneAndUpdate(
+            {
+                _id: postId,
+            },
+            {
+                $inc: { viewsCount: 1 },
+            },
+            {
+                returnDocument: 'after',
+            },
+            (err, doc) => {
+                if (err) {
+                    console.log(err);
+                    return res.status(500).json({
+                        message: 'faild display the post'
+                    });
+                }    
+
+                if (!doc) {
+                    return res.status(404).json({
+                        message: "faild to find the post",
+                    });
+                }
+
+               res.json(doc); 
+            },
+        );
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({
+            message: "faild to get posts",
+        });
+    }
+};
+
 export const create = async (req, res) => {
     try {
         const doc = new PostModel({
@@ -17,6 +68,6 @@ export const create = async (req, res) => {
         console.log(err);
         res.status(500).json({
             message: 'faild to save a post'
-        })
+        });
     }
-}
+};
