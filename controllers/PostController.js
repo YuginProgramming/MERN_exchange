@@ -1,4 +1,4 @@
-import PostModel from '../models/Post';
+import PostModel from '../models/Post.js';
 
 export const create = async (req, res) => {
     try {
@@ -18,6 +18,5 @@ export const create = async (req, res) => {
         res.status(500).json({
             message: 'faild to save a post'
         })
-        
     }
 }
