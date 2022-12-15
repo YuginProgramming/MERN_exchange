@@ -25,10 +25,10 @@ app.post('/auth/register', registerValidation, UserController.register);
 app.get('/auth/me', checkAuth, UserController.getMe);
 
 app.get('/posts', PostController.getAll);
-app.get('/posts/:id', PostController.getOne);
 app.post('/posts', checkAuth, postCreateValidation, PostController.create);
-// app.delete('/posts', PostController.remove);
-// app.patch('/posts', PostController.update);
+app.get('/posts/:id', PostController.getOne);
+app.delete('/posts/:id', checkAuth, PostController.remove);
+app.patch('/posts/:id', PostController.update);
 
 app.listen(3333, (err) => {
     if (err) {
